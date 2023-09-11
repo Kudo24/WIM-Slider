@@ -97,3 +97,32 @@ body {
 .date {
   font-size: 15px;
 }
+
+@media (max-width: 768px) {
+  /* Add responsive styles for smaller screens here */
+  .container {
+    width: 90%;
+  }
+
+  .slide-content {
+    position: absolute;
+    top: 30%;
+    left: 20px;
+    transform: translateY(-50%);
+    font-size: 15px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    height: 20%;
+  }
+  .content {
+    font-size: 15px;
+  }
+
+  .date {
+    font-size: 15px;
+  }
+
+  /* Add more responsive styles as needed */
+}
