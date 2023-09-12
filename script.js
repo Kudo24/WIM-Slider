@@ -8,7 +8,7 @@ const dot = document.querySelectorAll(".dot");
 const nextBtn = document.getElementById("next-btn");
 const prevBtn = document.getElementById("prev-btn");
 
-const interval = 2000;
+const interval = 500000;
 
 let index = 1;
 let slideId;
@@ -18,9 +18,13 @@ let currentPosX = 0;
 let dragOffset = 0;
 
 const firstClone = slides[0].cloneNode(true);
+const secondClone = slides[1].cloneNode(true);
+const thirdClone = slides[2].cloneNode(true);
 const lastClone = slides[slides.length - 1].cloneNode(true);
 
 firstClone.id = "first-clone";
+secondClone.id = "second-clone";
+thirdClone.id = "third-clone";
 lastClone.id = "last-clone";
 
 slide.append(firstClone);
@@ -38,7 +42,7 @@ const moveNextSlide = () => {
   if (index >= slides.length - 1) return; // if the picture gets into the last, it will return nothing
   index++;
   slide.style.transform = `translateX(${-slideWidth * index}px)`;
-  slide.style.transition = ".7s";
+  slide.style.transition = "1s";
   updateDotNavigation();
 };
 
@@ -46,7 +50,7 @@ const movePrevSlide = () => {
   if (index <= 0) return;
   index--;
   slide.style.transform = `translateX(${-slideWidth * index}px)`;
-  slide.style.transition = ".7s";
+  slide.style.transition = "1s";
   updateDotNavigation();
 };
 
@@ -108,7 +112,7 @@ document.addEventListener("touchmove", (e) => {
 document.addEventListener("mouseup", () => {
   if (!isDragging) return;
   isDragging = false;
-  slide.style.transition = ".7s";
+  slide.style.transition = "1s";
 
   if (Math.abs(dragOffset) >= slideWidth / 4) {
     if (dragOffset > 0) {
@@ -126,7 +130,7 @@ document.addEventListener("mouseup", () => {
 document.addEventListener("touchend", () => {
   if (!isDragging) return;
   isDragging = false;
-  slide.style.transition = ".7s";
+  slide.style.transition = "1s";
 
   if (Math.abs(dragOffset) >= slideWidth / 4) {
     if (dragOffset > 0) {
@@ -144,7 +148,7 @@ document.addEventListener("touchend", () => {
 slideContainer.addEventListener("mouseleave", () => {
   if (isDragging) {
     isDragging = false;
-    slide.style.transition = ".7s";
+    slide.style.transition = "1s";
     slide.style.transform = `translateX(${-slideWidth * index}px)`;
   }
 });
@@ -152,7 +156,7 @@ slideContainer.addEventListener("mouseleave", () => {
 slideContainer.addEventListener("touchcancel", () => {
   if (isDragging) {
     isDragging = false;
-    slide.style.transition = ".7s";
+    slide.style.transition = "1s";
     slide.style.transform = `translateX(${-slideWidth * index}px)`;
   }
 });
@@ -179,15 +183,27 @@ nextBtn.addEventListener("click", moveNextSlide);
 prevBtn.addEventListener("click", movePrevSlide);
 
 const selectDot = (clickedIndex) => {
+  slides = getSlide();
+
   index = clickedIndex + 1;
+
+  if (index > 3) {
+    index + 1;
+    slide.style.transform = `translateX(${-slideWidth * index}px)`;
+    slide.style.transition = "1s";
+    updateDotNavigation();
+  }
+  if (index === 1) {
+    index = 5;
+    moveNextSlide();
+  }
   slide.style.transform = `translateX(${-slideWidth * index}px)`;
-  slide.style.transition = ".7s";
+  slide.style.transition = "1s";
   updateDotNavigation();
 };
 
 dot.forEach((dotElement, i) => {
   slides = getSlide();
-
   dotElement.addEventListener("click", () => {
     selectDot(i);
   });
