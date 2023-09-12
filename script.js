@@ -28,7 +28,7 @@ slide.prepend(lastClone);
 
 dot[0].classList.add("active"); // initialize to the active dot in the first slide
 
-const slideWidth = slides[index].clientWidth;
+let slideWidth = slides[index].clientWidth;
 
 slide.style.transform = `translateX(${-slideWidth * index}px)`; // actions for left forward
 
@@ -75,24 +75,17 @@ slide.addEventListener("transitionend", () => {
   }
 });
 
-// slideContainer.addEventListener("mouseenter", () => {
-//   clearInterval(slideId);
-// });
-
-const updateDotNavigation = () => {
-  const dots = document.querySelectorAll(".dot");
-  dots.forEach((dot, i) => {
-    dot.classList.remove("active");
-    if (i === index - 1) {
-      dot.classList.add("active");
-    }
-  });
-};
-
-// Add the drag functionality
 slideContainer.addEventListener("mousedown", (e) => {
   isDragging = true;
   startPosX = e.clientX;
+  currentPosX = startPosX;
+  slide.style.transition = "none";
+  clearInterval(slideId);
+});
+
+slideContainer.addEventListener("touchstart", (e) => {
+  isDragging = true;
+  startPosX = e.touches[0].clientX;
   currentPosX = startPosX;
   slide.style.transition = "none";
   clearInterval(slideId);
@@ -105,7 +98,32 @@ document.addEventListener("mousemove", (e) => {
   slide.style.transform = `translateX(${-slideWidth * index + dragOffset}px)`;
 });
 
+document.addEventListener("touchmove", (e) => {
+  if (!isDragging) return;
+  currentPosX = e.touches[0].clientX;
+  dragOffset = currentPosX - startPosX;
+  slide.style.transform = `translateX(${-slideWidth * index + dragOffset}px)`;
+});
+
 document.addEventListener("mouseup", () => {
+  if (!isDragging) return;
+  isDragging = false;
+  slide.style.transition = ".7s";
+
+  if (Math.abs(dragOffset) >= slideWidth / 4) {
+    if (dragOffset > 0) {
+      movePrevSlide();
+    } else {
+      moveNextSlide();
+    }
+  } else {
+    slide.style.transform = `translateX(${-slideWidth * index}px)`;
+  }
+
+  startSlide();
+});
+
+document.addEventListener("touchend", () => {
   if (!isDragging) return;
   isDragging = false;
   slide.style.transition = ".7s";
@@ -131,6 +149,31 @@ slideContainer.addEventListener("mouseleave", () => {
   }
 });
 
+slideContainer.addEventListener("touchcancel", () => {
+  if (isDragging) {
+    isDragging = false;
+    slide.style.transition = ".7s";
+    slide.style.transform = `translateX(${-slideWidth * index}px)`;
+  }
+});
+
+const updateDotNavigation = () => {
+  const dots = document.querySelectorAll(".dot");
+  dots.forEach((dot, i) => {
+    dot.classList.remove("active");
+    if (i === index - 1) {
+      dot.classList.add("active");
+    }
+  });
+};
+document.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowRight") {
+    moveNextSlide();
+  } else if (e.key === "ArrowLeft") {
+    movePrevSlide();
+  }
+});
+
 nextBtn.addEventListener("click", moveNextSlide);
 
 prevBtn.addEventListener("click", movePrevSlide);
@@ -149,5 +192,3 @@ dot.forEach((dotElement, i) => {
     selectDot(i);
   });
 });
-
-dot.addEventListener("click", selectDot);
