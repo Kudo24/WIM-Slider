@@ -51,6 +51,8 @@ body {
   border: none;
   padding: 10px;
   color: white;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 #next-btn:focus,
@@ -93,13 +95,16 @@ body {
 }
 .heading {
   font-size: 20px;
+  text-shadow: 2px 2px 1px black;
 }
 .content {
   font-size: 30px;
+  text-shadow: 2px 2px 1px black;
 }
 
 .date {
   font-size: 20px;
+  text-shadow: 2px 2px 1px black;
 }
 
 @media (max-width: 768px) {
