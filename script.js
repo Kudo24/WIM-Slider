@@ -28,11 +28,13 @@ thirdClone.id = "third-clone";
 lastClone.id = "last-clone";
 
 slide.append(firstClone);
+// slide.append(secondClone);
+// slide.append(thirdClone);
 slide.prepend(lastClone);
 
 dot[0].classList.add("active"); // initialize to the active dot in the first slide
 
-let slideWidth = slides[index].clientWidth;
+const slideWidth = slides[index].clientWidth;
 
 slide.style.transform = `translateX(${-slideWidth * index}px)`; // actions for left forward
 
@@ -187,7 +189,6 @@ const selectDot = (clickedIndex) => {
   slides = getSlide();
 
   index = clickedIndex + 1;
-
   updateDotNavigation();
   slide.style.transition = "1s";
   slide.style.transform = `translateX(${-slideWidth * index}px)`;
