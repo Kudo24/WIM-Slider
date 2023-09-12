@@ -184,22 +184,11 @@ prevBtn.addEventListener("click", movePrevSlide);
 
 const selectDot = (clickedIndex) => {
   slides = getSlide();
-
+  slide.style.transition = "none";
   index = clickedIndex + 1;
 
-  if (index > 3) {
-    index + 1;
-    updateDotNavigation();
-    slide.style.transform = `translateX(${-slideWidth * index}px)`;
-    slide.style.transition = "1s";
-  }
-  if (index === 1) {
-    index = 5;
-    moveNextSlide();
-  }
   updateDotNavigation();
   slide.style.transform = `translateX(${-slideWidth * index}px)`;
-  slide.style.transition = "1s";
 };
 
 dot.forEach((dotElement, i) => {
