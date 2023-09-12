@@ -41,17 +41,17 @@ const getSlide = () => (slides = document.querySelectorAll(".slide"));
 const moveNextSlide = () => {
   if (index >= slides.length - 1) return; // if the picture gets into the last, it will return nothing
   index++;
+  updateDotNavigation();
   slide.style.transform = `translateX(${-slideWidth * index}px)`;
   slide.style.transition = "1s";
-  updateDotNavigation();
 };
 
 const movePrevSlide = () => {
   if (index <= 0) return;
   index--;
+  updateDotNavigation();
   slide.style.transform = `translateX(${-slideWidth * index}px)`;
   slide.style.transition = "1s";
-  updateDotNavigation();
 };
 
 const startSlide = () => {
@@ -67,15 +67,15 @@ slide.addEventListener("transitionend", () => {
   if (slides[index].id === firstClone.id) {
     slide.style.transition = "none";
     index = 1;
-    slide.style.transform = `translateX(${-slideWidth * index}px)`;
     updateDotNavigation();
+    slide.style.transform = `translateX(${-slideWidth * index}px)`;
   }
 
   if (slides[index].id === lastClone.id) {
     slide.style.transition = "none";
     index = slides.length - 2;
-    slide.style.transform = `translateX(${-slideWidth * index}px)`;
     updateDotNavigation();
+    slide.style.transform = `translateX(${-slideWidth * index}px)`;
   }
 });
 
@@ -189,17 +189,17 @@ const selectDot = (clickedIndex) => {
 
   if (index > 3) {
     index + 1;
+    updateDotNavigation();
     slide.style.transform = `translateX(${-slideWidth * index}px)`;
     slide.style.transition = "1s";
-    updateDotNavigation();
   }
   if (index === 1) {
     index = 5;
     moveNextSlide();
   }
+  updateDotNavigation();
   slide.style.transform = `translateX(${-slideWidth * index}px)`;
   slide.style.transition = "1s";
-  updateDotNavigation();
 };
 
 dot.forEach((dotElement, i) => {
