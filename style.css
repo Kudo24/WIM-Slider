@@ -31,6 +31,7 @@ body {
   width: 100%;
   height: auto;
   filter: brightness(50%);
+  /* position: absolute; */
 }
 
 .slide-controls {

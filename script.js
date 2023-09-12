@@ -39,6 +39,7 @@ slide.style.transform = `translateX(${-slideWidth * index}px)`; // actions for l
 const getSlide = () => (slides = document.querySelectorAll(".slide"));
 
 const moveNextSlide = () => {
+  slides = getSlide();
   if (index >= slides.length - 1) return; // if the picture gets into the last, it will return nothing
   index++;
   updateDotNavigation();
@@ -184,11 +185,13 @@ prevBtn.addEventListener("click", movePrevSlide);
 
 const selectDot = (clickedIndex) => {
   slides = getSlide();
-  slide.style.transition = "none";
+
   index = clickedIndex + 1;
 
   updateDotNavigation();
+  slide.style.transition = "1s";
   slide.style.transform = `translateX(${-slideWidth * index}px)`;
+  console.log(slide[index].id);
 };
 
 dot.forEach((dotElement, i) => {
