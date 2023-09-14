@@ -6,12 +6,14 @@
 
 body {
   margin-top: 100px;
+  background-color: antiquewhite;
 }
 
 .container {
   margin: 0 auto;
   width: 60%;
   height: 400px;
+  background-color: aqua;
 
   position: relative;
   overflow: hidden;
@@ -24,7 +26,9 @@ body {
 
 .slide {
   min-width: 100%;
+
   position: relative;
+  background-color: aqua;
 }
 
 .slide img {
@@ -34,6 +38,9 @@ body {
   /* position: absolute; */
 }
 
+.hide-slide {
+  display: none;
+}
 .slide-controls {
   position: absolute;
   top: 50%;
@@ -93,6 +100,7 @@ body {
   flex-direction: column;
   height: 40%;
   cursor: grabbing;
+  /* width: auto; */
 }
 .heading {
   font-size: 20px;

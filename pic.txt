@@ -1,0 +1,32 @@
+https://picsum.photos/id/233/1000/500
+
+
+const selectDot = (clickedIndex) => {
+  slides = getSlide();
+  index = clickedIndex + 1;
+  let isSet = false;
+
+  slides.forEach((slide, i) => {
+    if (i !== index) {
+      console.log("remove", slide.id);
+      slide.classList.add("hide-slide");
+
+      if (slide.id === "last-clone") {
+        slide.classList.remove("hide-slide");
+      }
+
+      if (slide.id === "first-clone") {
+        slide.classList.remove("hide-slide");
+      }
+      // // slide.style.transform = `translateX(${-slideWidth * index}px)`;
+      // slide.style.transition = "1s";
+
+      updateDotNavigation();
+    }
+  });
+
+  // slides.forEach((slide, i) => {
+  //   slide.classList.remove("hide-slide");
+  // });
+};
+
