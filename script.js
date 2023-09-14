@@ -207,5 +207,16 @@ dot.forEach((dotElement, i) => {
   slides = getSlide();
   dotElement.addEventListener("click", () => {
     selectDot(i);
+    console.log(i);
+    index = i + 1;
+
+    if (index === 4) {
+      if (slides[index].id === "second-slide") {
+        slide.style.transition = "none";
+        index = 4;
+        updateDotNavigation();
+        slide.style.transform = `translateX(${-slideWidth * index}px)`;
+      }
+    }
   });
 });
