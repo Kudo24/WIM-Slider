@@ -33,7 +33,7 @@ slide.append(firstClone);
 slide.prepend(lastClone);
 
 dot[0].classList.add("active"); // initialize to the active dot in the first slide
-
+let slideWidth = slides[index].clientWidth;
 const updateSlideWidth = () => {
   slideWidth = slides[index].clientWidth;
   slide.style.transform = `translateX(${-slideWidth * index}px)`;
@@ -44,8 +44,6 @@ window.addEventListener("resize", updateSlideWidth);
 
 // Call the updateSlideWidth function to initialize the slideWidth
 updateSlideWidth();
-
-const slideWidth = slides[index].clientWidth;
 
 slide.style.transform = `translateX(${-slideWidth * index}px)`; // actions for left forward
 
@@ -203,7 +201,6 @@ const selectDot = (clickedIndex) => {
   updateDotNavigation();
   slide.style.transition = "1s";
   slide.style.transform = `translateX(${-slideWidth * index}px)`;
-  console.log(slide[index].id);
 };
 
 dot.forEach((dotElement, i) => {
