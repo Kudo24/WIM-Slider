@@ -33,6 +33,16 @@ slide.prepend(lastClone);
 dot[0].classList.add("active"); // initialize to the active dot in the first slide
 
 let slideWidth = slides[index].clientWidth;
+const updateSlideWidth = () => {
+  slideWidth = slides[index].clientWidth;
+  slide.style.transform = `translateX(${-slideWidth * index}px)`;
+};
+
+// Attach the event listener to the window's resize event
+window.addEventListener("resize", updateSlideWidth);
+
+// Call the updateSlideWidth function to initialize the slideWidth
+updateSlideWidth();
 
 slide.style.transform = `translateX(${-slideWidth * index}px)`; // actions for left forward
 
