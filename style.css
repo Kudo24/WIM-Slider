@@ -16,7 +16,7 @@ body {
   background-color: aqua;
 
   position: relative;
-  /* overflow: hidden; */
+  overflow: hidden;
 }
 
 .slides {
