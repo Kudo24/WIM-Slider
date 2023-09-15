@@ -26,7 +26,6 @@ let dragOffset = 0;
 let changeTrans;
 
 let slideWidth = slides[index].clientWidth;
-console.log(slideWidth);
 
 const updateSlideWidth = () => {
   slideWidth = slides[index].clientWidth;
@@ -81,6 +80,7 @@ slide.addEventListener("transitionend", () => {
   }
 
   if (slides[index].id === lastClone.id) {
+    console.log("last bago pa sa last");
     slide.style.transition = "none";
     console.log(slides.length);
     index = slides.length - 2;
@@ -104,10 +104,12 @@ const moveToNextSlide = () => {
 };
 
 const moveToPreviousSlide = () => {
+  if (index < 0) return console.log("reach 5");
   index--;
-  updateDotNavigation();
+
   slide.style.transition = ".7s";
   slide.style.transform = `translateX(${-slideWidth * index}px)`;
+  updateDotNavigation();
 };
 nextBtn.addEventListener("click", moveToNextSlide);
 prevBtn.addEventListener("click", moveToPreviousSlide);
@@ -142,6 +144,7 @@ const selectDot = (clickedIndex) => {
   slides2 = document.querySelectorAll(".slide");
 
   console.log(" before clicked index", clickedIndex);
+  console.log(slides.length);
 
   if (Pass === true || Pass2 === true) {
     slide.style.transition = "1s";
@@ -150,6 +153,7 @@ const selectDot = (clickedIndex) => {
 
     updateDotNavigation();
   } else {
+    console.log("may likdang");
     if (changeTrans === true) {
       if (clickedIndex === 2) {
         //// chcek
@@ -201,10 +205,9 @@ const selectDot = (clickedIndex) => {
         }, 1100);
       }
     } else {
+      console.log(slides.length);
       if (clickedIndex === 2) {
-        for (let i = 0; i < slides.length; i++) {
-          slides[1].classList.add("hide-slide");
-        }
+        slides[1].classList.add("hide-slide");
         slide.style.transition = "1s";
         slide.style.transform = `translateX(${-slideWidth * (index - 1)}px)`;
         setTimeout(() => {
@@ -250,12 +253,32 @@ const selectDot = (clickedIndex) => {
         }, 1100);
       }
     }
+    if (clickedIndex === 0 && lastindex === 4) {
+      slides[2].classList.add("hide-slide");
+      slides[3].classList.add("hide-slide");
+
+      slide.style.transition = "";
+      slide.style.transform = `translateX(${-slideWidth * index}px)`;
+      // setTimeout(() => {
+      //   for (let i = 0; i < slides.length; i++) {
+      //     slides[i].classList.remove("hide-slide");
+      //   }
+      //   slide.style.transition = "none";
+      //   slide.style.transform = `translateX(${-slideWidth * index}px)`;
+      // }, 1100);
+    }
+
+    if (clickedIndex === 1 && lastindex === 4) {
+      for (let i = 4; i > 0; i--) {
+        slides[3].classList.add("hide-slide");
+      }
+    }
 
     updateDotNavigation();
   }
-
+  console.log("clicked index: ", clickedIndex);
   console.log("last Index", lastindex);
-  console.log("clicked", index);
+  console.log(slides.length);
   // console.log("");
 };
 
@@ -264,16 +287,6 @@ dot.forEach((dotElement, i) => {
     // console.log("last", lastindex);
     console.log(i);
     selectDot(i);
-
-    // index to dotIndex
-    let eventPass = areConsecutive(lastindex, dotIndex);
-    let eventPass2 = SameNumbers(lastindex, dotIndex);
-
-    slides = getSlide();
-    if (eventPass2 === true || eventPass === true) return;
-    if (eventPass === false) {
-      console.log("hindi magkasunod");
-    }
   });
 });
 
