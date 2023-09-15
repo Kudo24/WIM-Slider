@@ -14,6 +14,7 @@ const thirdSlide = document.getElementById("third-slide");
 const fourthSlide = document.getElementById("fourth-slide");
 const interval = 30000;
 
+let dotIndex = 0;
 let lastindex = 0;
 let index = 1;
 let slideId;
@@ -58,8 +59,27 @@ const startSlide = () => {
 
 // console.log(document.querySelectorAll(".slide"));
 // console.log(slides.length);
-slide.style.transform = `translateX(${-slideWidth * index}px)`;
+
 const getSlide = () => (slides = document.querySelectorAll(".slide"));
+const indexToHide = 1;
+slides.forEach((slide, i) => {
+  if (i === indexToHide) {
+    slide.classList.add("hide-slide");
+  }
+  slide.style.transition = "1s";
+  slide.style.transform = `translateX(${-slideWidth * index}px)`;
+});
+
+setTimeout(() => {
+  slides = getSlide();
+  slides.forEach((slide, i) => {
+    slide.classList.remove("hide-slide");
+  });
+}, 5000);
+console.log(index);
+
+slide.style.transform = `translateX(${-slideWidth * index}px)`;
+// const getSlide = () => (slides = document.querySelectorAll(".slide"));
 
 slide.addEventListener("transitionend", () => {
   slides = getSlide();
@@ -90,10 +110,12 @@ const moveToNextSlide = () => {
   slides = getSlide();
   console.log(" before press next slide: ", index);
   if (index >= slides.length - 1) return console.log("reach 5");
+
   index++;
 
   slide.style.transition = "1s";
   slide.style.transform = `translateX(${-slideWidth * index}px)`;
+
   updateDotNavigation();
   console.log("after press next slides", index);
 };
@@ -127,32 +149,44 @@ document.addEventListener("keydown", (e) => {
 
 const selectDot = (clickedIndex) => {
   lastindex = index;
-  index = clickedIndex + 1;
+  // index = clickedIndex + 1;
+  dotIndex = clickedIndex + 1;
+  // all index changed in dotIndex;
 
-  let Pass = areConsecutive(lastindex, index);
-  let Pass2 = SameNumbers(lastindex, index);
+  let Pass = areConsecutive(lastindex, dotIndex);
+  let Pass2 = SameNumbers(lastindex, dotIndex);
   slides2 = document.querySelectorAll(".slide");
 
   // console.log(Pass);
 
   if (Pass === true || Pass2 === true) {
     slide.style.transition = "1s";
-    slide.style.transform = `translateX(${-slideWidth * index}px)`;
+    slide.style.transform = `translateX(${-slideWidth * dotIndex}px)`;
 
     updateDotNavigation();
   } else {
     slides.forEach((slide, i) => {
       if (i !== clickedIndex && i !== lastindex - 1) {
-        slide.classList.add("hide-slide");
+        slides.forEach((Slide, i) => {
+          slide.classList.add("hide-slide");
+          console.log(slide);
+        });
       }
 
-      console.log("dot - index", index);
+      console.log("dot - index", dotIndex);
       slide.style.transition = "1s";
-      slide.style.transform = `translateX(${-slideWidth * (index - 2)}px)`;
-      console.log("after slide", index);
+      slide.style.transform = `translateX(${-slideWidth * index}px)`;
+
+      // setTimeout(() => {
+      //   slides.forEach((slide, i) => {
+      //     slide.classList.remove("hide-slide");
+      //   });
+      // }, 1000);
+
       updateDotNavigation();
     });
   }
+
   console.log(index);
 };
 
@@ -160,42 +194,41 @@ dot.forEach((dotElement, i) => {
   dotElement.addEventListener("click", () => {
     selectDot(i);
 
-    let eventPass = areConsecutive(lastindex, index);
-    let eventPass2 = SameNumbers(lastindex, index);
+    // index to dotIndex
+    let eventPass = areConsecutive(lastindex, dotIndex);
+    let eventPass2 = SameNumbers(lastindex, dotIndex);
 
     slides = getSlide();
     if (eventPass2 === true || eventPass === true) return;
     if (eventPass === false) {
-      if (slides[index].id === thirdSlide.id) {
-        // console.log("slide 3 after trans", index);
-        setTimeout(() => {
-          slides.forEach((slide, i) => {
-            slide.classList.remove("hide-slide");
-          });
-          slide.style.transition = "none";
-          slide.style.transform = `translateX(${-slideWidth * (3 - 1)}px)`;
-          updateDotNavigation();
-        }, 1000);
-        index = 3;
-        console.log(slides);
-      }
-
-      if (slides[index].id === fourthSlide.id) {
-        slides = getSlide();
-
-        // slide.style.transition = "none";
-
-        setTimeout(() => {
-          slides.forEach((slide, i) => {
-            slide.classList.remove("hide-slide");
-            // console.log(slide);
-          });
-          slide.style.transition = "none";
-          slide.style.transform = `translateX(${-slideWidth * (4 - 2)}px)`;
-        }, 1000);
-
-        // console.log(document.querySelectorAll(".slide"));
-      }
+      // if (slides[dotIndex].id === thirdSlide.id) {
+      //   // console.log("slide 3 after trans", index);
+      //   setTimeout(() => {
+      //     slides.forEach((slide, i) => {
+      //       slide.classList.remove("hide-slide");
+      //     });
+      //     console.log(firstClone);
+      //     console.log(lastClone);
+      //     slide.style.transition = "none";
+      //     slide.style.transform = `translateX(${-slideWidth * (3 - 1)}px)`;
+      //     index = 3;
+      //     console.log(slides);
+      //     updateDotNavigation();
+      //   }, 1000);
+      // }
+      // if (slides[index].id === fourthSlide.id) {
+      //   slides = getSlide();
+      //   // slide.style.transition = "none";
+      //   setTimeout(() => {
+      //     slides.forEach((slide, i) => {
+      //       slide.classList.remove("hide-slide");
+      //       // console.log(slide);
+      //     });
+      //     slide.style.transition = "none";
+      //     slide.style.transform = `translateX(${-slideWidth * (4 - 2)}px)`;
+      //   }, 1000);
+      //   // console.log(document.querySelectorAll(".slide"));
+      // }
     }
   });
 });
