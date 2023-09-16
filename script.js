@@ -196,19 +196,8 @@ const selectDot = (clickedIndex) => {
   slides = getSlide();
 
   index = clickedIndex + 1;
-
-  if (index > 3) {
-    index + 1;
-    slide.style.transform = `translateX(${-slideWidth * index}px)`;
-    slide.style.transition = "1s";
-    updateDotNavigation();
-  }
-  if (index === 1) {
-    index = 5;
-    moveNextSlide();
-  }
-  slide.style.transform = `translateX(${-slideWidth * index}px)`;
   slide.style.transition = "1s";
+  slide.style.transform = `translateX(${-slideWidth * index}px)`;
   updateDotNavigation();
 };
 
