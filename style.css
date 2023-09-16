@@ -33,6 +33,9 @@ body {
   filter: brightness(50%);
   /* position: absolute; */
 }
+.hide-slide {
+  display: none;
+}
 
 .slide-controls {
   position: absolute;

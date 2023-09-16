@@ -10,6 +10,7 @@ const prevBtn = document.getElementById("prev-btn");
 
 const interval = 500000;
 
+let lastIndex;
 let index = 1;
 let slideId;
 let isDragging = false;
@@ -77,6 +78,7 @@ startSlide();
 slide.addEventListener("transitionend", () => {
   slides = getSlide();
   if (slides[index].id === firstClone.id) {
+    console.log("firstclone is appear");
     slide.style.transition = "none";
     index = 1;
     updateDotNavigation();
@@ -89,6 +91,8 @@ slide.addEventListener("transitionend", () => {
     updateDotNavigation();
     slide.style.transform = `translateX(${-slideWidth * index}px)`;
   }
+
+  lastIndex = index;
 });
 
 slideContainer.addEventListener("mousedown", (e) => {
@@ -197,26 +201,122 @@ prevBtn.addEventListener("click", movePrevSlide);
 const selectDot = (clickedIndex) => {
   slides = getSlide();
 
+  lastIndex = index;
   index = clickedIndex + 1;
+
+  let consecutive = areConsecutive(lastIndex, index);
+  let sameNumbers = SameNumbers(lastIndex, index);
+
+  if (consecutive === true || sameNumbers === true) {
+    slide.style.transition = "1s";
+    slide.style.transform = `translateX(${-slideWidth * index}px)`;
+  } else {
+    if (lastIndex === 1 && index === 4) {
+      slides[2].classList.add("hide-slide");
+      slides[3].classList.add("hide-slide");
+
+      slide.style.transition = "1s";
+      slide.style.transform = `translateX(${-slideWidth * (index - 2)}px)`;
+
+      setTimeout(() => {
+        for (let i = 0; i < slides.length; i++) {
+          slides[i].classList.remove("hide-slide");
+        }
+        slide.style.transition = "none";
+        slide.style.transform = `translateX(${-slideWidth * index}px)`;
+      }, 1100);
+    }
+    if (lastIndex === 1 && index === 3) {
+      slides[2].classList.add("hide-slide");
+
+      slide.style.transition = "1s";
+      slide.style.transform = `translateX(${-slideWidth * (index - 1)}px)`;
+
+      setTimeout(() => {
+        for (let i = 0; i < slides.length; i++) {
+          slides[i].classList.remove("hide-slide");
+        }
+        slide.style.transition = "none";
+        slide.style.transform = `translateX(${-slideWidth * index}px)`;
+      }, 1100);
+    }
+    if (lastIndex === 2 && index === 4) {
+      slides[3].classList.add("hide-slide");
+
+      slide.style.transition = "1s";
+      slide.style.transform = `translateX(${-slideWidth * (index - 1)}px)`;
+
+      setTimeout(() => {
+        for (let i = 0; i < slides.length; i++) {
+          slides[i].classList.remove("hide-slide");
+        }
+        slide.style.transition = "none";
+        slide.style.transform = `translateX(${-slideWidth * index}px)`;
+      }, 1100);
+    }
+
+    if (lastIndex === 4 && index === 1) {
+      console.log(index);
+      console.log("backforward");
+
+      slides[3].classList.add("hide-slide");
+      // slides[2].classList.add("hide-slide");
+
+      slide.style.transition = "60s";
+      slide.style.transform = `translateX(${slideWidth * index}px)`;
+      // setTimeout(() => {
+      //   for (let i = 0; i < slides.length; i++) {
+      //     slides[i].classList.remove("hide-slide");
+      //   }
+      //   slide.style.transition = "none";
+      //   slide.style.transform = `translateX(${-slideWidth * index}px)`;
+      // }, 1100);
+    }
+
+    if (lastIndex === 3 && index === 1) {
+      slides[2].classList.add("hide-slide");
+
+      slide.style.transition = "30s";
+      slide.style.transform = `translateX(${-slideWidth * index}px)`;
+
+      // setTimeout(() => {
+      //   for (let i = 0; i < slides.length; i++) {
+      //     slides[i].classList.remove("hide-slide");
+      //   }
+      //   slide.style.transition = "none";
+      //   slide.style.transform = `translateX(${-slideWidth * index}px)`;
+      // }, 1100);
+    }
+  }
   updateDotNavigation();
-  slide.style.transition = "1s";
-  slide.style.transform = `translateX(${-slideWidth * index}px)`;
 };
 
 dot.forEach((dotElement, i) => {
   slides = getSlide();
   dotElement.addEventListener("click", () => {
     selectDot(i);
-    console.log(i);
-    index = i + 1;
-
-    if (index === 4) {
-      if (slides[index].id === "second-slide") {
-        slide.style.transition = "none";
-        index = 4;
-        updateDotNavigation();
-        slide.style.transform = `translateX(${-slideWidth * index}px)`;
-      }
-    }
   });
 });
+
+function areConsecutive(num1, num2) {
+  // Calculate the absolute difference between the two numbers
+  const difference = Math.abs(num1 - num2);
+
+  // Check if the difference is equal to 1
+  if (difference === 1) {
+    return true; // Numbers are consecutive
+  } else {
+    return false; // Numbers are not consecutive
+  }
+}
+
+function SameNumbers(num1, num2) {
+  // Calculate the absolute difference between the two numbers
+
+  // Check if the difference is equal to 1
+  if (num1 === num2) {
+    return true; // Numbers are consecutive
+  } else {
+    return false; // Numbers are not consecutive
+  }
+}
