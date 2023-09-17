@@ -29,8 +29,7 @@ thirdClone.id = "third-clone";
 lastClone.id = "last-clone";
 
 slide.append(firstClone);
-// slide.append(secondClone);
-// slide.append(thirdClone);
+
 slide.prepend(lastClone);
 
 dot[0].classList.add("active"); // initialize to the active dot in the first slide
@@ -57,6 +56,7 @@ const moveNextSlide = () => {
   updateDotNavigation();
   slide.style.transform = `translateX(${-slideWidth * index}px)`;
   slide.style.transition = "1s";
+  console.log("Move Next Index: ", index);
 };
 
 const movePrevSlide = () => {
@@ -65,6 +65,7 @@ const movePrevSlide = () => {
   updateDotNavigation();
   slide.style.transform = `translateX(${-slideWidth * index}px)`;
   slide.style.transition = "1s";
+  console.log("Move Prev Index: ", index);
 };
 
 const startSlide = () => {
@@ -93,6 +94,7 @@ slide.addEventListener("transitionend", () => {
   }
 
   lastIndex = index;
+  console.log("transition Index", index);
 });
 
 slideContainer.addEventListener("mousedown", (e) => {
@@ -256,14 +258,40 @@ const selectDot = (clickedIndex) => {
     }
 
     if (lastIndex === 4 && index === 1) {
-      console.log(index);
-      console.log("backforward");
-
+      slides[0].classList.add("hide-slide");
+      slides[2].classList.add("hide-slide");
       slides[3].classList.add("hide-slide");
-      // slides[2].classList.add("hide-slide");
+      slides[5].classList.add("hide-slide");
 
-      slide.style.transition = "60s";
-      slide.style.transform = `translateX(${slideWidth * index}px)`;
+      slide.style.transition = "none";
+      slide.style.transform = `translateX(${-slideWidth * (index - 0)}px)`;
+      setTimeout(() => {
+        slide.style.transition = "1s";
+        slide.style.transform = `translateX(${-slideWidth * (index - 1)}px)`;
+      }, 100);
+
+      slides.forEach((slide, i) => {
+        console.log(slide);
+      });
+
+      setTimeout(() => {
+        for (let i = 0; i < slides.length; i++) {
+          slides[i].classList.remove("hide-slide");
+        }
+      }, 1000);
+      // slide.style.transition = "none";
+      // slide.style.transform = `translateX(${-slideWidth * index}px)`;
+      // index = 1;
+      // console.log(index);
+      // console.log(index);
+      // console.log("backforward");
+
+      // console.log(slideWidth * -1);
+      // slide.style.transition = "3s";
+      // slide.style.transform = `translateX(${slideWidth / (0 - index)}px)`;
+      // slides[3].classList.add("hide-slide");
+      // slides[2].classList.add("hide-slide");
+      // slides[2].classList.add("hide-slide");
       // setTimeout(() => {
       //   for (let i = 0; i < slides.length; i++) {
       //     slides[i].classList.remove("hide-slide");
@@ -274,10 +302,11 @@ const selectDot = (clickedIndex) => {
     }
 
     if (lastIndex === 3 && index === 1) {
-      slides[2].classList.add("hide-slide");
+      console.log("alistaire");
+      // slides[2].classList.add("hide-slide");
 
-      slide.style.transition = "30s";
-      slide.style.transform = `translateX(${-slideWidth * index}px)`;
+      // slide.style.transition = "30s";
+      // slide.style.transform = `translateX(${-slideWidth * index}px)`;
 
       // setTimeout(() => {
       //   for (let i = 0; i < slides.length; i++) {
