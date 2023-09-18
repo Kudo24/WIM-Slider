@@ -111,21 +111,21 @@ slideContainer.addEventListener("touchstart", (e) => {
   clearInterval(slideId);
 });
 
-document.addEventListener("mousemove", (e) => {
+slide.addEventListener("mousemove", (e) => {
   if (!isDragging) return;
   currentPosX = e.clientX;
   dragOffset = currentPosX - startPosX;
   slide.style.transform = `translateX(${-slideWidth * index + dragOffset}px)`;
 });
 
-document.addEventListener("touchmove", (e) => {
+slide.addEventListener("touchmove", (e) => {
   if (!isDragging) return;
   currentPosX = e.touches[0].clientX;
   dragOffset = currentPosX - startPosX;
   slide.style.transform = `translateX(${-slideWidth * index + dragOffset}px)`;
 });
 
-document.addEventListener("mouseup", () => {
+slide.addEventListener("mouseup", () => {
   if (!isDragging) return;
   isDragging = false;
   slide.style.transition = "1s";
@@ -143,7 +143,7 @@ document.addEventListener("mouseup", () => {
   startSlide();
 });
 
-document.addEventListener("touchend", () => {
+slideContainer.addEventListener("touchend", () => {
   if (!isDragging) return;
   isDragging = false;
   slide.style.transition = "1s";
@@ -161,7 +161,7 @@ document.addEventListener("touchend", () => {
   startSlide();
 });
 
-slideContainer.addEventListener("mouseleave", () => {
+slide.addEventListener("mouseleave", () => {
   if (isDragging) {
     isDragging = false;
     slide.style.transition = "1s";
