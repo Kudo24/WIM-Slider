@@ -15,8 +15,7 @@ let index = 1;
 let slideId;
 let isDragging = false;
 let startPosX = 0;
-let currentPosX = 0;
-let dragOffset = 0;
+let translateX = 0;
 
 const firstClone = slides[0].cloneNode(true);
 const secondClone = slides[1].cloneNode(true);
@@ -48,6 +47,54 @@ updateSlideWidth();
 slide.style.transform = `translateX(${-slideWidth * index}px)`; // actions for left forward
 
 const getSlide = () => (slides = document.querySelectorAll(".slide"));
+
+slide.addEventListener("mousedown", (e) => {
+  isDragging = true;
+  startPosX = e.clientX;
+  slide.style.transition = "none";
+});
+
+slide.addEventListener("mousemove", (e) => {
+  if (!isDragging) return;
+  const currentPosX = e.clientX;
+  const offsetX = currentPosX - startPosX;
+  translateX = -slideWidth * index + offsetX;
+  slide.style.transform = `translateX(${translateX}px)`;
+});
+
+slide.addEventListener("mouseup", () => {
+  if (!isDragging) return;
+  isDragging = false;
+  slide.style.transition = "0.5s";
+
+  // Determine whether to move to the next or previous slide based on the drag distance
+  if (Math.abs(translateX) > slideWidth / 4) {
+    if (translateX > 0) {
+      movePrevSlide();
+    } else {
+      moveNextSlide();
+    }
+  } else {
+    slide.style.transform = `translateX(${-slideWidth * index}px)`;
+  }
+});
+
+slide.addEventListener("mouseleave", () => {
+  if (!isDragging) return;
+  isDragging = false;
+  slide.style.transition = "0.5s";
+
+  // Determine whether to move to the next or previous slide based on the drag distance
+  if (Math.abs(translateX) > slideWidth / 4) {
+    if (translateX > 0) {
+      movePrevSlide();
+    } else {
+      moveNextSlide();
+    }
+  } else {
+    slide.style.transform = `translateX(${-slideWidth * index}px)`;
+  }
+});
 
 const moveNextSlide = () => {
   slides = getSlide();
@@ -95,88 +142,6 @@ slide.addEventListener("transitionend", () => {
 
   lastIndex = index;
   console.log("transition Index", index);
-});
-
-slideContainer.addEventListener("mousedown", (e) => {
-  isDragging = true;
-  startPosX = e.clientX;
-  currentPosX = startPosX;
-  slide.style.transition = "none";
-  clearInterval(slideId);
-});
-
-slideContainer.addEventListener("touchstart", (e) => {
-  isDragging = true;
-  startPosX = e.touches[0].clientX;
-  currentPosX = startPosX;
-  slide.style.transition = "none";
-  clearInterval(slideId);
-});
-
-document.addEventListener("mousemove", (e) => {
-  if (!isDragging) return;
-  currentPosX = e.clientX;
-  dragOffset = currentPosX - startPosX;
-  slide.style.transform = `translateX(${-slideWidth * index + dragOffset}px)`;
-});
-
-document.addEventListener("touchmove", (e) => {
-  if (!isDragging) return;
-  currentPosX = e.touches[0].clientX;
-  dragOffset = currentPosX - startPosX;
-  slide.style.transform = `translateX(${-slideWidth * index + dragOffset}px)`;
-});
-
-document.addEventListener("mouseup", () => {
-  if (!isDragging) return;
-  isDragging = false;
-  slide.style.transition = "1s";
-
-  if (Math.abs(dragOffset) >= slideWidth / 4) {
-    if (dragOffset > 0) {
-      movePrevSlide();
-    } else {
-      moveNextSlide();
-    }
-  } else {
-    slide.style.transform = `translateX(${-slideWidth * index}px)`;
-  }
-
-  startSlide();
-});
-
-document.addEventListener("touchend", () => {
-  if (!isDragging) return;
-  isDragging = false;
-  slide.style.transition = "1s";
-
-  if (Math.abs(dragOffset) >= slideWidth / 4) {
-    if (dragOffset > 0) {
-      movePrevSlide();
-    } else {
-      moveNextSlide();
-    }
-  } else {
-    slide.style.transform = `translateX(${-slideWidth * index}px)`;
-  }
-
-  startSlide();
-});
-
-slideContainer.addEventListener("mouseleave", () => {
-  if (isDragging) {
-    isDragging = false;
-    slide.style.transition = "1s";
-    slide.style.transform = `translateX(${-slideWidth * index}px)`;
-  }
-});
-
-slideContainer.addEventListener("touchcancel", () => {
-  if (isDragging) {
-    isDragging = false;
-    slide.style.transition = "1s";
-    slide.style.transform = `translateX(${-slideWidth * index}px)`;
-  }
 });
 
 const updateDotNavigation = () => {
