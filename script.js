@@ -8,7 +8,7 @@ const dot = document.querySelectorAll(".dot");
 const nextBtn = document.getElementById("next-btn");
 const prevBtn = document.getElementById("prev-btn");
 
-const interval = 500000;
+const interval = 5000;
 
 let lastIndex;
 let index = 1;
@@ -92,9 +92,7 @@ slide.addEventListener("transitionend", () => {
     updateDotNavigation();
     slide.style.transform = `translateX(${-slideWidth * index}px)`;
   }
-
-  lastIndex = index;
-  console.log("transition Index", index);
+  console.log("transitioned index: ", index);
 });
 
 slideContainer.addEventListener("mousedown", (e) => {
@@ -228,6 +226,7 @@ const selectDot = (clickedIndex) => {
         slide.style.transform = `translateX(${-slideWidth * index}px)`;
       }, 1100);
     }
+
     if (lastIndex === 1 && index === 3) {
       slides[2].classList.add("hide-slide");
 
@@ -242,6 +241,7 @@ const selectDot = (clickedIndex) => {
         slide.style.transform = `translateX(${-slideWidth * index}px)`;
       }, 1100);
     }
+
     if (lastIndex === 2 && index === 4) {
       slides[3].classList.add("hide-slide");
 
@@ -284,7 +284,6 @@ const selectDot = (clickedIndex) => {
     }
 
     if (lastIndex === 4 && index === 2) {
-      console.log("alistaire");
       slides[3].classList.add("hide-slide");
       slide.style.transition = "none";
       slide.style.transform = `translateX(${-slideWidth * (index + 1)}px)`;
@@ -326,12 +325,6 @@ const selectDot = (clickedIndex) => {
       }, 1000);
     }
   }
-
-  console.log("last index", lastIndex);
-  console.log("selected index", index);
-  slides.forEach((slide, i) => {
-    console.log(slide);
-  });
 
   updateDotNavigation();
 };
