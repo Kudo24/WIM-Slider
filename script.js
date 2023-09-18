@@ -13,10 +13,14 @@ const interval = 5000;
 let lastIndex;
 let index = 1;
 let slideId;
+
 let isDragging = false;
 let startPosX = 0;
 let currentPosX = 0;
 let dragOffset = 0;
+
+// Check if the device supports touch events
+const supportsTouch = "ontouchstart" in window || navigator.msMaxTouchPoints;
 
 const firstClone = slides[0].cloneNode(true);
 const secondClone = slides[1].cloneNode(true);
@@ -56,7 +60,6 @@ const moveNextSlide = () => {
   updateDotNavigation();
   slide.style.transform = `translateX(${-slideWidth * index}px)`;
   slide.style.transition = "1s";
-  console.log("Move Next Index: ", index);
 };
 
 const movePrevSlide = () => {
@@ -65,7 +68,6 @@ const movePrevSlide = () => {
   updateDotNavigation();
   slide.style.transform = `translateX(${-slideWidth * index}px)`;
   slide.style.transition = "1s";
-  console.log("Move Prev Index: ", index);
 };
 
 const startSlide = () => {
@@ -79,7 +81,6 @@ startSlide();
 slide.addEventListener("transitionend", () => {
   slides = getSlide();
   if (slides[index].id === firstClone.id) {
-    console.log("firstclone is appear");
     slide.style.transition = "none";
     index = 1;
     updateDotNavigation();
@@ -92,90 +93,97 @@ slide.addEventListener("transitionend", () => {
     updateDotNavigation();
     slide.style.transform = `translateX(${-slideWidth * index}px)`;
   }
-  console.log("transitioned index: ", index);
 });
 
-slideContainer.addEventListener("mousedown", (e) => {
-  isDragging = true;
-  startPosX = e.clientX;
-  currentPosX = startPosX;
-  slide.style.transition = "none";
-  clearInterval(slideId);
-});
+if (supportsTouch) {
+  // Touch events for mobile devices
+  slideContainer.addEventListener("touchstart", (e) => {
+    isDragging = true;
+    startPosX = e.touches[0].clientX;
+    slide.style.transition = "none";
+  });
 
-slideContainer.addEventListener("touchstart", (e) => {
-  isDragging = true;
-  startPosX = e.touches[0].clientX;
-  currentPosX = startPosX;
-  slide.style.transition = "none";
-  clearInterval(slideId);
-});
+  slideContainer.addEventListener("touchmove", (e) => {
+    if (!isDragging) return;
 
-slide.addEventListener("mousemove", (e) => {
-  if (!isDragging) return;
-  currentPosX = e.clientX;
-  dragOffset = currentPosX - startPosX;
-  slide.style.transform = `translateX(${-slideWidth * index + dragOffset}px)`;
-});
+    currentPosX = e.touches[0].clientX;
+    dragOffset = currentPosX - startPosX;
+    slide.style.transform = `translateX(${-slideWidth * index + dragOffset}px)`;
+  });
 
-slide.addEventListener("touchmove", (e) => {
-  if (!isDragging) return;
-  currentPosX = e.touches[0].clientX;
-  dragOffset = currentPosX - startPosX;
-  slide.style.transform = `translateX(${-slideWidth * index + dragOffset}px)`;
-});
+  slideContainer.addEventListener("touchend", () => {
+    if (!isDragging) return;
 
-slide.addEventListener("mouseup", () => {
-  if (!isDragging) return;
-  isDragging = false;
-  slide.style.transition = "1s";
-
-  if (Math.abs(dragOffset) >= slideWidth / 4) {
-    if (dragOffset > 0) {
-      movePrevSlide();
-    } else {
-      moveNextSlide();
-    }
-  } else {
-    slide.style.transform = `translateX(${-slideWidth * index}px)`;
-  }
-
-  startSlide();
-});
-
-slideContainer.addEventListener("touchend", () => {
-  if (!isDragging) return;
-  isDragging = false;
-  slide.style.transition = "1s";
-
-  if (Math.abs(dragOffset) >= slideWidth / 4) {
-    if (dragOffset > 0) {
-      movePrevSlide();
-    } else {
-      moveNextSlide();
-    }
-  } else {
-    slide.style.transform = `translateX(${-slideWidth * index}px)`;
-  }
-
-  startSlide();
-});
-
-slide.addEventListener("mouseleave", () => {
-  if (isDragging) {
     isDragging = false;
-    slide.style.transition = "1s";
-    slide.style.transform = `translateX(${-slideWidth * index}px)`;
-  }
-});
 
-slideContainer.addEventListener("touchcancel", () => {
-  if (isDragging) {
+    // Determine whether to move to the next or previous slide based on drag direction
+    if (dragOffset > 50) {
+      movePrevSlide();
+    } else if (dragOffset < -50) {
+      moveNextSlide();
+    } else {
+      slide.style.transform = `translateX(${-slideWidth * index}px)`;
+    }
+
+    startPosX = 0;
+    currentPosX = 0;
+    dragOffset = 0;
+  });
+
+  slideContainer.addEventListener("touchcancel", () => {
+    if (isDragging) {
+      isDragging = false;
+      slide.style.transform = `translateX(${-slideWidth * index}px)`;
+      startPosX = 0;
+      currentPosX = 0;
+      dragOffset = 0;
+    }
+  });
+} else {
+  // Mouse events for desktop devices
+  slideContainer.addEventListener("mousedown", (e) => {
+    isDragging = true;
+    startPosX = e.clientX;
+    slide.style.transition = "none";
+  });
+
+  slideContainer.addEventListener("mousemove", (e) => {
+    if (!isDragging) return;
+
+    currentPosX = e.clientX;
+    dragOffset = currentPosX - startPosX;
+    slide.style.transform = `translateX(${-slideWidth * index + dragOffset}px)`;
+  });
+
+  slideContainer.addEventListener("mouseup", () => {
+    if (!isDragging) return;
+
     isDragging = false;
-    slide.style.transition = "1s";
-    slide.style.transform = `translateX(${-slideWidth * index}px)`;
-  }
-});
+
+    // Determine whether to move to the next or previous slide based on drag direction
+    if (dragOffset > 50) {
+      movePrevSlide();
+    } else if (dragOffset < -50) {
+      moveNextSlide();
+    } else {
+      slide.style.transform = `translateX(${-slideWidth * index}px)`;
+    }
+
+    startPosX = 0;
+    currentPosX = 0;
+    dragOffset = 0;
+  });
+
+  slideContainer.addEventListener("mouseleave", () => {
+    if (isDragging) {
+      isDragging = false;
+      slide.style.transform = `translateX(${-slideWidth * index}px)`;
+      startPosX = 0;
+      currentPosX = 0;
+      dragOffset = 0;
+    }
+  });
+}
 
 const updateDotNavigation = () => {
   const dots = document.querySelectorAll(".dot");
