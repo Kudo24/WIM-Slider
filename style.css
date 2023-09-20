@@ -31,6 +31,10 @@ body {
   width: 100%;
   height: auto;
   filter: brightness(50%);
+  /* position: absolute; */
+}
+.hide-slide {
+  display: none;
 }
 .hide-slide {
   display: none;
@@ -53,9 +57,13 @@ body {
   font-size: 30px;
   border: none;
   padding: 10px;
-  color: white;
+  color: gray;
   margin-left: 20px;
   margin-right: 20px;
+}
+#next-btn:hover,
+#prev-btn:hover {
+  color: white;
 }
 
 #next-btn:focus,
@@ -71,12 +79,16 @@ body {
 }
 
 .dot {
-  width: 10px;
-  height: 10px;
+  width: 9px;
+  height: 9px;
   background-color: gray;
   border-radius: 50%;
   margin-right: 5px;
   cursor: pointer;
+}
+
+.dot:hover {
+  background-color: white;
 }
 
 .dot.active {
@@ -85,10 +97,10 @@ body {
 
 .slide-content {
   position: absolute;
-  top: 75%;
-  left: 50px;
+  top: 72%;
+  left: 60px;
   transform: translateY(-50%);
-  /* background-color: aqua; */
+
   color: white;
   display: flex;
   justify-content: space-evenly;
@@ -97,17 +109,21 @@ body {
   cursor: grabbing;
 }
 .heading {
-  font-size: 20px;
+  font-size: 16px;
   text-shadow: 2px 2px 1px black;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 .content {
   font-size: 30px;
   text-shadow: 2px 2px 1px black;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 
 .date {
-  font-size: 20px;
+  font-size: 15px;
+
   text-shadow: 2px 2px 1px black;
+  font-family: Arial, sans-serif;
 }
 
 @media (max-width: 768px) {

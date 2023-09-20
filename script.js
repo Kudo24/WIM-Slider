@@ -8,7 +8,7 @@ const dot = document.querySelectorAll(".dot");
 const nextBtn = document.getElementById("next-btn");
 const prevBtn = document.getElementById("prev-btn");
 
-const interval = 500000;
+const interval = 5000;
 
 let lastIndex;
 let index = 1;
@@ -33,10 +33,10 @@ thirdClone.id = "third-clone";
 lastClone.id = "last-clone";
 
 slide.append(firstClone);
+
 slide.prepend(lastClone);
 
 dot[0].classList.add("active"); // initialize to the active dot in the first slide
-
 let slideWidth = slides[index].clientWidth;
 const updateSlideWidth = () => {
   slideWidth = slides[index].clientWidth;
@@ -57,17 +57,17 @@ const moveNextSlide = () => {
   slides = getSlide();
   if (index >= slides.length - 1) return; // if the picture gets into the last, it will return nothing
   index++;
+  updateDotNavigation();
   slide.style.transform = `translateX(${-slideWidth * index}px)`;
   slide.style.transition = "1s";
-  updateDotNavigation();
 };
 
 const movePrevSlide = () => {
   if (index <= 0) return;
   index--;
+  updateDotNavigation();
   slide.style.transform = `translateX(${-slideWidth * index}px)`;
   slide.style.transition = "1s";
-  updateDotNavigation();
 };
 
 const startSlide = () => {
@@ -177,191 +177,198 @@ if (supportsTouch) {
   slideContainer.addEventListener("mouseleave", () => {
     if (isDragging) {
       isDragging = false;
+      slide.style.transition = "1s";
       slide.style.transform = `translateX(${-slideWidth * index}px)`;
-      startPosX = 0;
-      currentPosX = 0;
-      dragOffset = 0;
     }
   });
-}
-const updateDotNavigation = () => {
-  const dots = document.querySelectorAll(".dot");
-  dots.forEach((dot, i) => {
-    dot.classList.remove("active");
-    if (i === index - 1) {
-      dot.classList.add("active");
+
+  slideContainer.addEventListener("touchcancel", () => {
+    if (isDragging) {
+      isDragging = false;
+      slide.style.transition = "1s";
+      slide.style.transform = `translateX(${-slideWidth * index}px)`;
     }
   });
-};
-document.addEventListener("keydown", (e) => {
-  if (e.key === "ArrowRight") {
-    moveNextSlide();
-  } else if (e.key === "ArrowLeft") {
-    movePrevSlide();
-  }
-});
 
-nextBtn.addEventListener("click", moveNextSlide);
-
-prevBtn.addEventListener("click", movePrevSlide);
-
-const selectDot = (clickedIndex) => {
-  slides = getSlide();
-
-  lastIndex = index;
-  index = clickedIndex + 1;
-
-  let consecutive = areConsecutive(lastIndex, index);
-  let sameNumbers = SameNumbers(lastIndex, index);
-
-  if (consecutive === true || sameNumbers === true) {
-    slide.style.transition = "1s";
-    slide.style.transform = `translateX(${-slideWidth * index}px)`;
-  } else {
-    if (lastIndex === 1 && index === 4) {
-      slides[2].classList.add("hide-slide");
-      slides[3].classList.add("hide-slide");
-
-      slide.style.transition = "1s";
-      slide.style.transform = `translateX(${-slideWidth * (index - 2)}px)`;
-
-      setTimeout(() => {
-        for (let i = 0; i < slides.length; i++) {
-          slides[i].classList.remove("hide-slide");
-        }
-        slide.style.transition = "none";
-        slide.style.transform = `translateX(${-slideWidth * index}px)`;
-      }, 1100);
+  const updateDotNavigation = () => {
+    const dots = document.querySelectorAll(".dot");
+    dots.forEach((dot, i) => {
+      dot.classList.remove("active");
+      if (i === index - 1) {
+        dot.classList.add("active");
+      }
+    });
+  };
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowRight") {
+      moveNextSlide();
+    } else if (e.key === "ArrowLeft") {
+      movePrevSlide();
     }
+  });
 
-    if (lastIndex === 1 && index === 3) {
-      slides[2].classList.add("hide-slide");
+  nextBtn.addEventListener("click", moveNextSlide);
 
+  prevBtn.addEventListener("click", movePrevSlide);
+
+  const selectDot = (clickedIndex) => {
+    slides = getSlide();
+
+    lastIndex = index;
+    index = clickedIndex + 1;
+
+    let consecutive = areConsecutive(lastIndex, index);
+    let sameNumbers = SameNumbers(lastIndex, index);
+
+    if (consecutive === true || sameNumbers === true) {
       slide.style.transition = "1s";
-      slide.style.transform = `translateX(${-slideWidth * (index - 1)}px)`;
+      slide.style.transform = `translateX(${-slideWidth * index}px)`;
+    } else {
+      if (lastIndex === 1 && index === 4) {
+        slides[2].classList.add("hide-slide");
+        slides[3].classList.add("hide-slide");
 
-      setTimeout(() => {
-        for (let i = 0; i < slides.length; i++) {
-          slides[i].classList.remove("hide-slide");
-        }
-        slide.style.transition = "none";
-        slide.style.transform = `translateX(${-slideWidth * index}px)`;
-      }, 1100);
-    }
+        slide.style.transition = "1s";
+        slide.style.transform = `translateX(${-slideWidth * (index - 2)}px)`;
 
-    if (lastIndex === 2 && index === 4) {
-      slides[3].classList.add("hide-slide");
+        setTimeout(() => {
+          for (let i = 0; i < slides.length; i++) {
+            slides[i].classList.remove("hide-slide");
+          }
+          slide.style.transition = "none";
+          slide.style.transform = `translateX(${-slideWidth * index}px)`;
+        }, 1100);
+      }
 
-      slide.style.transition = "1s";
-      slide.style.transform = `translateX(${-slideWidth * (index - 1)}px)`;
+      if (lastIndex === 1 && index === 3) {
+        slides[2].classList.add("hide-slide");
 
-      setTimeout(() => {
-        for (let i = 0; i < slides.length; i++) {
-          slides[i].classList.remove("hide-slide");
-        }
-        slide.style.transition = "none";
-        slide.style.transform = `translateX(${-slideWidth * index}px)`;
-      }, 1100);
-    }
-
-    if (lastIndex === 4 && index === 1) {
-      slides[0].classList.add("hide-slide");
-      slides[2].classList.add("hide-slide");
-      slides[3].classList.add("hide-slide");
-      slides[5].classList.add("hide-slide");
-
-      slide.style.transition = "none";
-      slide.style.transform = `translateX(${-slideWidth * (index - 0)}px)`;
-
-      setTimeout(() => {
         slide.style.transition = "1s";
         slide.style.transform = `translateX(${-slideWidth * (index - 1)}px)`;
-      }, 100);
 
-      setTimeout(() => {
-        for (let i = 0; i < slides.length; i++) {
-          slides[i].classList.remove("hide-slide");
-        }
-      }, 1000);
+        setTimeout(() => {
+          for (let i = 0; i < slides.length; i++) {
+            slides[i].classList.remove("hide-slide");
+          }
+          slide.style.transition = "none";
+          slide.style.transform = `translateX(${-slideWidth * index}px)`;
+        }, 1100);
+      }
 
-      setTimeout(() => {
-        slide.style.transition = "none";
-        slide.style.transform = `translateX(${-slideWidth * index}px)`;
-      }, 1000);
-    }
+      if (lastIndex === 2 && index === 4) {
+        slides[3].classList.add("hide-slide");
 
-    if (lastIndex === 4 && index === 2) {
-      slides[3].classList.add("hide-slide");
-      slide.style.transition = "none";
-      slide.style.transform = `translateX(${-slideWidth * (index + 1)}px)`;
-
-      setTimeout(() => {
         slide.style.transition = "1s";
-        slide.style.transform = `translateX(${-slideWidth * index}px)`;
-      }, 100);
+        slide.style.transform = `translateX(${-slideWidth * (index - 1)}px)`;
 
-      setTimeout(() => {
-        for (let i = 0; i < slides.length; i++) {
-          slides[i].classList.remove("hide-slide");
-        }
-      }, 1000);
+        setTimeout(() => {
+          for (let i = 0; i < slides.length; i++) {
+            slides[i].classList.remove("hide-slide");
+          }
+          slide.style.transition = "none";
+          slide.style.transform = `translateX(${-slideWidth * index}px)`;
+        }, 1100);
+      }
 
-      setTimeout(() => {
+      if (lastIndex === 4 && index === 1) {
+        slides[0].classList.add("hide-slide");
+        slides[2].classList.add("hide-slide");
+        slides[3].classList.add("hide-slide");
+        slides[5].classList.add("hide-slide");
+
         slide.style.transition = "none";
-        slide.style.transform = `translateX(${-slideWidth * index}px)`;
-      }, 1000);
+        slide.style.transform = `translateX(${-slideWidth * (index - 0)}px)`;
+
+        setTimeout(() => {
+          slide.style.transition = "1s";
+          slide.style.transform = `translateX(${-slideWidth * (index - 1)}px)`;
+        }, 100);
+
+        setTimeout(() => {
+          for (let i = 0; i < slides.length; i++) {
+            slides[i].classList.remove("hide-slide");
+          }
+        }, 1000);
+
+        setTimeout(() => {
+          slide.style.transition = "none";
+          slide.style.transform = `translateX(${-slideWidth * index}px)`;
+        }, 1000);
+      }
+
+      if (lastIndex === 4 && index === 2) {
+        slides[3].classList.add("hide-slide");
+        slide.style.transition = "none";
+        slide.style.transform = `translateX(${-slideWidth * (index + 1)}px)`;
+
+        setTimeout(() => {
+          slide.style.transition = "1s";
+          slide.style.transform = `translateX(${-slideWidth * index}px)`;
+        }, 100);
+
+        setTimeout(() => {
+          for (let i = 0; i < slides.length; i++) {
+            slides[i].classList.remove("hide-slide");
+          }
+        }, 1000);
+
+        setTimeout(() => {
+          slide.style.transition = "none";
+          slide.style.transform = `translateX(${-slideWidth * index}px)`;
+        }, 1000);
+      }
+
+      if (lastIndex === 3 && index === 1) {
+        slides[2].classList.add("hide-slide");
+        slide.style.transition = "none";
+        slide.style.transform = `translateX(${-slideWidth * (index + 1)}px)`;
+
+        setTimeout(() => {
+          slide.style.transition = "1s";
+          slide.style.transform = `translateX(${-slideWidth * index}px)`;
+        }, 100);
+        setTimeout(() => {
+          for (let i = 0; i < slides.length; i++) {
+            slides[i].classList.remove("hide-slide");
+          }
+        }, 1000);
+        setTimeout(() => {
+          slide.style.transition = "none";
+          slide.style.transform = `translateX(${-slideWidth * index}px)`;
+        }, 1000);
+      }
     }
 
-    if (lastIndex === 3 && index === 1) {
-      slides[2].classList.add("hide-slide");
-      slide.style.transition = "none";
-      slide.style.transform = `translateX(${-slideWidth * (index + 1)}px)`;
+    updateDotNavigation();
+  };
 
-      setTimeout(() => {
-        slide.style.transition = "1s";
-        slide.style.transform = `translateX(${-slideWidth * index}px)`;
-      }, 100);
-      setTimeout(() => {
-        for (let i = 0; i < slides.length; i++) {
-          slides[i].classList.remove("hide-slide");
-        }
-      }, 1000);
-      setTimeout(() => {
-        slide.style.transition = "none";
-        slide.style.transform = `translateX(${-slideWidth * index}px)`;
-      }, 1000);
-    }
-  }
-
-  updateDotNavigation();
-};
-
-dot.forEach((dotElement, i) => {
-  slides = getSlide();
-  dotElement.addEventListener("click", () => {
-    selectDot(i);
+  dot.forEach((dotElement, i) => {
+    slides = getSlide();
+    dotElement.addEventListener("click", () => {
+      selectDot(i);
+    });
   });
-});
 
-function areConsecutive(num1, num2) {
-  // Calculate the absolute difference between the two numbers
-  const difference = Math.abs(num1 - num2);
+  function areConsecutive(num1, num2) {
+    // Calculate the absolute difference between the two numbers
+    const difference = Math.abs(num1 - num2);
 
-  // Check if the difference is equal to 1
-  if (difference === 1) {
-    return true; // Numbers are consecutive
-  } else {
-    return false; // Numbers are not consecutive
+    // Check if the difference is equal to 1
+    if (difference === 1) {
+      return true; // Numbers are consecutive
+    } else {
+      return false; // Numbers are not consecutive
+    }
   }
-}
 
-function SameNumbers(num1, num2) {
-  // Calculate the absolute difference between the two numbers
+  function SameNumbers(num1, num2) {
+    // Calculate the absolute difference between the two numbers
 
-  // Check if the difference is equal to 1
-  if (num1 === num2) {
-    return true; // Numbers are consecutive
-  } else {
-    return false; // Numbers are not consecutive
+    // Check if the difference is equal to 1
+    if (num1 === num2) {
+      return true; // Numbers are consecutive
+    } else {
+      return false; // Numbers are not consecutive
+    }
   }
 }
