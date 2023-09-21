@@ -109,16 +109,17 @@ body {
   font-size: 16px;
   text-shadow: 2px 2px 1px black;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  text-transform: uppercase;
 }
 .content {
   font-size: 30px;
   text-shadow: 2px 2px 1px black;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  text-transform: capitalize;
 }
 
 .date {
   font-size: 15px;
-
   text-shadow: 2px 2px 1px black;
   font-family: Arial, sans-serif;
 }
