@@ -14,7 +14,7 @@ body {
   height: 400px;
 
   position: relative;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .slides {
@@ -31,7 +31,6 @@ body {
   width: 100%;
   height: auto;
   filter: brightness(50%);
-  /* position: absolute; */
 }
 .hide-slide {
   display: none;
@@ -54,13 +53,9 @@ body {
   font-size: 30px;
   border: none;
   padding: 10px;
-  color: gray;
+  color: white;
   margin-left: 20px;
   margin-right: 20px;
-}
-#next-btn:hover,
-#prev-btn:hover {
-  color: white;
 }
 
 #next-btn:focus,
@@ -76,16 +71,12 @@ body {
 }
 
 .dot {
-  width: 9px;
-  height: 9px;
+  width: 10px;
+  height: 10px;
   background-color: gray;
   border-radius: 50%;
   margin-right: 5px;
   cursor: pointer;
-}
-
-.dot:hover {
-  background-color: white;
 }
 
 .dot.active {
@@ -94,10 +85,10 @@ body {
 
 .slide-content {
   position: absolute;
-  top: 72%;
-  left: 60px;
+  top: 75%;
+  left: 50px;
   transform: translateY(-50%);
-
+  /* background-color: aqua; */
   color: white;
   display: flex;
   justify-content: space-evenly;
@@ -106,22 +97,17 @@ body {
   cursor: grabbing;
 }
 .heading {
-  font-size: 16px;
+  font-size: 20px;
   text-shadow: 2px 2px 1px black;
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-  text-transform: uppercase;
 }
 .content {
   font-size: 30px;
   text-shadow: 2px 2px 1px black;
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-  text-transform: capitalize;
 }
 
 .date {
-  font-size: 15px;
+  font-size: 20px;
   text-shadow: 2px 2px 1px black;
-  font-family: Arial, sans-serif;
 }
 
 @media (max-width: 768px) {
