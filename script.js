@@ -8,7 +8,7 @@ const dot = document.querySelectorAll(".dot");
 const nextBtn = document.getElementById("next-btn");
 const prevBtn = document.getElementById("prev-btn");
 
-const interval = 200000;
+const interval = 1000000;
 
 let lastIndex;
 let index = 1;
@@ -49,14 +49,17 @@ window.addEventListener("resize", updateSlideWidth);
 // Call the updateSlideWidth function to initialize the slideWidth
 updateSlideWidth();
 
-// slide.style.transform = `translateX(${-slideWidth * index}px)`; // actions for left forward
+slide.style.transform = `translateX(${-slideWidth * index}px)`; // actions for left forward
 
 const getSlide = () => (slides = document.querySelectorAll(".slide"));
 
 const moveNextSlide = () => {
   slides = getSlide();
+  console.log("before move next:", index);
   if (index >= slides.length - 1) return; // if the picture gets into the last, it will return nothing
+
   index++;
+  console.log("after next:", index);
   updateDotNavigation();
   slide.style.transform = `translateX(${-slideWidth * index}px)`;
   slide.style.transition = "1s";
@@ -93,7 +96,6 @@ slide.addEventListener("transitionend", () => {
     updateDotNavigation();
     slide.style.transform = `translateX(${-slideWidth * index}px)`;
   }
-  console.log(index);
 });
 const updateDotNavigation = () => {
   const dots = document.querySelectorAll(".dot");
@@ -130,27 +132,55 @@ const selectDot = (clickedIndex) => {
     slide.style.transition = "1s";
     slide.style.transform = `translateX(${-slideWidth * index}px)`;
   } else {
-    slides.forEach((slide, i) => {
-      if (i !== lastIndex && i !== index && i !== 0 && i !== 9) {
-        slide.classList.add("hide-slide");
-      }
+    // slides.forEach((slide, i) => {
+    //   if (i !== lastIndex && i !== index && i !== 0 && i !== 9) {
+    //     slide.classList.add("hide-slide");
+    //   }
+
+    //   slide.style.transition = "1s";
+    //   slide.style.transform = `translateX(${
+    //     -slideWidth * (index - clickedIndex)
+    //   }px)`;
+    // });
+    let trans = index - lastIndex - 1;
+    for (let i = lastIndex + 1; i < index; i++) {
+      slides[i].classList.add("hide-slide");
+      console.log(i);
       slide.style.transition = "1s";
-      slide.style.transform = `translateX(${-slideWidth * 1}px)`;
-    });
-    console.log(slides);
-
+      slide.style.transform = `translateX(${-slideWidth * (index - trans)}px)`;
+    }
     setTimeout(() => {
-      slides.forEach((slide, i) => {
-        slide.classList.remove("hide-slide");
-      });
-    }, 2000);
-
-    setTimeout(() => {
+      for (let i = 0; i < slides.length; i++) {
+        slides[i].classList.remove("hide-slide");
+      }
       slide.style.transition = "none";
-      slide.style.transform = `translateX(${-slideWidth * (index - 1)}px)`;
-    }, 2100);
+      slide.style.transform = `translateX(${-slideWidth * index}px)`;
+    }, 1100);
+    console.log(trans);
+
+    // if (lastIndex === 1 && index === 4) {
+    //   slides[2].classList.add("hide-slide");
+    //   slides[3].classList.add("hide-slide");
+
+    //   slide.style.transition = "1s";
+    //   slide.style.transform = `translateX(${-slideWidth * (index - 2)}px)`;
+
+    //   setTimeout(() => {
+    //     for (let i = 0; i < slides.length; i++) {
+    //       slides[i].classList.remove("hide-slide");
+    //     }
+    //     // slide.style.transition = "none";
+    //     // slide.style.transform = `translateX(${-slideWidth * index}px)`;
+    //   }, 1100);
+    //   console.log(slides);
+    //   console.log("present index: ", index);
+    // }
+
+    console.log("hindi magkasunod");
   }
-  index = 4;
+  console.log(slides);
+  console.log("last index: ", lastIndex);
+  console.log("present Index: ", index);
   updateDotNavigation();
 };
 
