@@ -132,55 +132,49 @@ const selectDot = (clickedIndex) => {
     slide.style.transition = "1s";
     slide.style.transform = `translateX(${-slideWidth * index}px)`;
   } else {
-    // slides.forEach((slide, i) => {
-    //   if (i !== lastIndex && i !== index && i !== 0 && i !== 9) {
-    //     slide.classList.add("hide-slide");
-    //   }
+    if (lastIndex < index) {
+      let trans = index - lastIndex - 1;
+      for (let i = lastIndex + 1; i < index; i++) {
+        slides[i].classList.add("hide-slide");
 
-    //   slide.style.transition = "1s";
-    //   slide.style.transform = `translateX(${
-    //     -slideWidth * (index - clickedIndex)
-    //   }px)`;
-    // });
-    let trans = index - lastIndex - 1;
-    for (let i = lastIndex + 1; i < index; i++) {
-      slides[i].classList.add("hide-slide");
-      console.log(i);
-      slide.style.transition = "1s";
-      slide.style.transform = `translateX(${-slideWidth * (index - trans)}px)`;
-    }
-    setTimeout(() => {
-      for (let i = 0; i < slides.length; i++) {
-        slides[i].classList.remove("hide-slide");
+        slide.style.transition = "1s";
+        slide.style.transform = `translateX(${
+          -slideWidth * (index - trans)
+        }px)`;
       }
+      setTimeout(() => {
+        for (let i = 0; i < slides.length; i++) {
+          slides[i].classList.remove("hide-slide");
+        }
+        slide.style.transition = "none";
+        slide.style.transform = `translateX(${-slideWidth * index}px)`;
+      }, 1100);
+    } else {
+      for (i = lastIndex - 1; i > index; i--) {
+        slides[i].classList.add("hide-slide");
+      }
+
       slide.style.transition = "none";
-      slide.style.transform = `translateX(${-slideWidth * index}px)`;
-    }, 1100);
-    console.log(trans);
-
-    // if (lastIndex === 1 && index === 4) {
-    //   slides[2].classList.add("hide-slide");
-    //   slides[3].classList.add("hide-slide");
-
-    //   slide.style.transition = "1s";
-    //   slide.style.transform = `translateX(${-slideWidth * (index - 2)}px)`;
-
-    //   setTimeout(() => {
-    //     for (let i = 0; i < slides.length; i++) {
-    //       slides[i].classList.remove("hide-slide");
-    //     }
-    //     // slide.style.transition = "none";
-    //     // slide.style.transform = `translateX(${-slideWidth * index}px)`;
-    //   }, 1100);
-    //   console.log(slides);
-    //   console.log("present index: ", index);
-    // }
-
-    console.log("hindi magkasunod");
+      slide.style.transform = `translateX(${-slideWidth * (index + 1)}px)`;
+      setTimeout(() => {
+        slide.style.transition = "1s";
+        slide.style.transform = `translateX(${-slideWidth * index}px)`;
+      }, 100);
+      setTimeout(() => {
+        for (let i = 0; i < slides.length; i++) {
+          slides[i].classList.remove("hide-slide");
+        }
+      }, 1200);
+      setTimeout(() => {
+        slide.style.transition = "1s";
+        slide.style.transform = `translateX(${-slideWidth * index}px)`;
+      }, 1000);
+      console.log(slides);
+    }
   }
-  console.log(slides);
-  console.log("last index: ", lastIndex);
-  console.log("present Index: ", index);
+  console.log("lastIndex: ", lastIndex);
+  console.log("present index: ", index);
+
   updateDotNavigation();
 };
 

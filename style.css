@@ -12,9 +12,10 @@ body {
   margin: 0 auto;
   width: 60%;
   height: 400px;
+  background-color: antiquewhite;
 
   position: relative;
-  /* overflow: hidden; */
+  overflow: hidden;
 }
 
 .slides {
@@ -28,6 +29,7 @@ body {
 }
 
 .slide img {
+  border-color: red;
   width: 100%;
   height: auto;
   filter: brightness(50%);
