@@ -218,105 +218,30 @@ const selectDot = (clickedIndex) => {
     slide.style.transition = "1s";
     slide.style.transform = `translateX(${-slideWidth * index}px)`;
   } else {
-    if (lastIndex === 1 && index === 4) {
-      slides[2].classList.add("hide-slide");
-      slides[3].classList.add("hide-slide");
+    if (lastIndex < index) {
+      let trans = index - lastIndex - 1;
+      for (let i = lastIndex + 1; i < index; i++) {
+        slides[i].classList.add("hide-slide");
 
-      slide.style.transition = "1s";
-      slide.style.transform = `translateX(${-slideWidth * (index - 2)}px)`;
-
-      setTimeout(() => {
-        for (let i = 0; i < slides.length; i++) {
-          slides[i].classList.remove("hide-slide");
-        }
-        slide.style.transition = "none";
-        slide.style.transform = `translateX(${-slideWidth * index}px)`;
-      }, 1100);
-    }
-
-    if (lastIndex === 1 && index === 3) {
-      slides[2].classList.add("hide-slide");
-
-      slide.style.transition = "1s";
-      slide.style.transform = `translateX(${-slideWidth * (index - 1)}px)`;
-
-      setTimeout(() => {
-        for (let i = 0; i < slides.length; i++) {
-          slides[i].classList.remove("hide-slide");
-        }
-        slide.style.transition = "none";
-        slide.style.transform = `translateX(${-slideWidth * index}px)`;
-      }, 1100);
-    }
-
-    if (lastIndex === 2 && index === 4) {
-      slides[3].classList.add("hide-slide");
-
-      slide.style.transition = "1s";
-      slide.style.transform = `translateX(${-slideWidth * (index - 1)}px)`;
-
-      setTimeout(() => {
-        for (let i = 0; i < slides.length; i++) {
-          slides[i].classList.remove("hide-slide");
-        }
-        slide.style.transition = "none";
-        slide.style.transform = `translateX(${-slideWidth * index}px)`;
-      }, 1100);
-    }
-
-    if (lastIndex === 4 && index === 1) {
-      slides[0].classList.add("hide-slide");
-      slides[2].classList.add("hide-slide");
-      slides[3].classList.add("hide-slide");
-      slides[5].classList.add("hide-slide");
-
-      slide.style.transition = "none";
-      slide.style.transform = `translateX(${-slideWidth * (index - 0)}px)`;
-
-      setTimeout(() => {
         slide.style.transition = "1s";
-        slide.style.transform = `translateX(${-slideWidth * (index - 1)}px)`;
-      }, 100);
-
+        slide.style.transform = `translateX(${
+          -slideWidth * (index - trans)
+        }px)`;
+      }
       setTimeout(() => {
         for (let i = 0; i < slides.length; i++) {
           slides[i].classList.remove("hide-slide");
         }
-      }, 1000);
-
-      setTimeout(() => {
         slide.style.transition = "none";
         slide.style.transform = `translateX(${-slideWidth * index}px)`;
-      }, 1000);
-    }
+      }, 1100);
+    } else {
+      for (i = lastIndex - 1; i > index; i--) {
+        slides[i].classList.add("hide-slide");
+      }
 
-    if (lastIndex === 4 && index === 2) {
-      slides[3].classList.add("hide-slide");
       slide.style.transition = "none";
       slide.style.transform = `translateX(${-slideWidth * (index + 1)}px)`;
-
-      setTimeout(() => {
-        slide.style.transition = "1s";
-        slide.style.transform = `translateX(${-slideWidth * index}px)`;
-      }, 100);
-
-      setTimeout(() => {
-        for (let i = 0; i < slides.length; i++) {
-          slides[i].classList.remove("hide-slide");
-        }
-      }, 1000);
-
-      setTimeout(() => {
-        slide.style.transition = "none";
-        slide.style.transform = `translateX(${-slideWidth * index}px)`;
-      }, 1000);
-    }
-
-    if (lastIndex === 3 && index === 1) {
-      slides[2].classList.add("hide-slide");
-      slide.style.transition = "none";
-      slide.style.transform = `translateX(${-slideWidth * (index + 1)}px)`;
-
       setTimeout(() => {
         slide.style.transition = "1s";
         slide.style.transform = `translateX(${-slideWidth * index}px)`;
@@ -325,13 +250,16 @@ const selectDot = (clickedIndex) => {
         for (let i = 0; i < slides.length; i++) {
           slides[i].classList.remove("hide-slide");
         }
-      }, 1000);
+      }, 1200);
       setTimeout(() => {
-        slide.style.transition = "none";
+        slide.style.transition = "1s";
         slide.style.transform = `translateX(${-slideWidth * index}px)`;
       }, 1000);
+      console.log(slides);
     }
   }
+  console.log("lastIndex: ", lastIndex);
+  console.log("present index: ", index);
 
   updateDotNavigation();
 };
